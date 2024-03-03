@@ -3,5 +3,5 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println("go api hub!")
+	fmt.Println("go api !")
 }
