@@ -2,11 +2,11 @@
 package database
 
 import (
-    "database/sql"
-    "fmt"
-
-    "gorm.io/gorm"
-    gormlogger "gorm.io/gorm/logger"
+	"database/sql"
+	"fmt"
+	
+	"gorm.io/gorm"
+	gormlogger "gorm.io/gorm/logger"
 )
 
 // DB 对象
@@ -32,4 +32,5 @@ func Connect(dbConfig gorm.Dialector, _logger gormlogger.Interface) {
     if err != nil {
         fmt.Println(err.Error())
     }
+	
 }
