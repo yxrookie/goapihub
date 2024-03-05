@@ -47,3 +47,38 @@ func (sc *SignupController) IsPhoneExist(c *gin.Context) {
 		"exist": user.IsPhoneExist(request.Phone),
 	})
 }
+
+
+
+// IsEmailExist: judge whether email is registered
+func (sc *SignupController) IsEmailExist(c *gin.Context) {
+	
+	// init request 
+	request := requests.SignupEmailExistRequest{}
+
+
+	// parse JSON request
+	if err := c.ShouldBindJSON(&request); err != nil {
+		// parse failure, return 422 status code and failure information
+		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
+			"error": err.Error(),
+		})
+		fmt.Println(err.Error())
+		// end request
+		return
+	}
+
+	// form validation
+	errs := requests.ValidateSignupEmailExist(&request, c)
+	if len(errs) > 0 {
+		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
+			"errors": errs,
+		})
+		return
+	}
+
+	// select database, and return response
+	c.JSON(http.StatusOK, gin.H {
+		"exist": user.IsEmailExist(request.Email),
+	})
+}
