@@ -1,16 +1,17 @@
 package bootstrap
 
 import (
-    "errors"
-    "fmt"
-    "goapihub/pkg/config"
-    "goapihub/pkg/database"
-    "time"
+	"errors"
+	"fmt"
+	"goapihub/app/models/user"
+	"goapihub/pkg/config"
+	"goapihub/pkg/database"
+	"time"
 
-    "gorm.io/driver/mysql"
-    "gorm.io/driver/sqlite"
-    "gorm.io/gorm"
-    "gorm.io/gorm/logger"
+	"gorm.io/driver/mysql"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 // SetupDB 初始化数据库和 ORM
@@ -48,4 +49,7 @@ func SetupDB() {
     database.SQLDB.SetMaxIdleConns(config.GetInt("database.mysql.max_idle_connections"))
     // 设置每个链接的过期时间
     database.SQLDB.SetConnMaxLifetime(time.Duration(config.GetInt("database.mysql.max_life_seconds")) * time.Second)
+
+	// check the mysql table whether exist, if not, create a table using the user.User struct
+	database.DB.AutoMigrate(&user.User{})
 }
