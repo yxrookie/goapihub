@@ -1,8 +1,7 @@
 package requests
 
 import (
-	"fmt"
-	"net/http"
+	"goapihub/pkg/response"
 
 	"github.com/gin-gonic/gin"
 	"github.com/thedevsaddam/govalidator"
@@ -26,11 +25,8 @@ type validFunc func(data any, c *gin.Context) map[string][]string
 func ValidForm(obj any, c *gin.Context,handler validFunc) bool {
 	// parse JSON request
 	if err := c.ShouldBindJSON(obj); err != nil {
-		// parse failure, return 422 status code and failure information
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
-			"error": err.Error(),
-		})
-		fmt.Println(err.Error())
+		response.BadRequest(c, err, "请求解析错误，请确认请求格式是否正确。上传文件请使用 multipart 标头，参数请使用 JSON 格式")
+		
 		// end request
 		return false
 	}
@@ -39,9 +35,7 @@ func ValidForm(obj any, c *gin.Context,handler validFunc) bool {
 	errs := handler(obj, c)
 
 	if len(errs) > 0 {
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
-			"errors": errs,
-		})
+		response.ValidationError(c, errs)
 		return false
 	}
 	return true
