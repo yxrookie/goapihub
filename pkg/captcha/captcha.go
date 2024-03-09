@@ -2,12 +2,13 @@
 package captcha
 
 import (
-    "goapihub/pkg/app"
-    "goapihub/pkg/config"
-    "goapihub/pkg/redis"
-    "sync"
+	"goapihub/pkg/app"
+	"goapihub/pkg/config"
+	
+	"goapihub/pkg/redis"
+	"sync"
 
-    "github.com/mojocn/base64Captcha"
+	"github.com/mojocn/base64Captcha"
 )
 
 type Captcha struct {
@@ -55,7 +56,6 @@ func (c *Captcha) GenerateCaptcha() (id string, b64s string, answer string, err 
 
 // VerifyCaptcha 验证验证码是否正确
 func (c *Captcha) VerifyCaptcha(id string, answer string) (match bool) {
-
     // 方便本地和 API 自动测试
     if !app.IsProduction() && id == config.GetString("captcha.testing_key") {
         return true

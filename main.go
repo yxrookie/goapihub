@@ -6,6 +6,7 @@ import (
 	"goapihub/bootstrap"
 	"goapihub/config"
 	pkgconfig "goapihub/pkg/config"
+	
 	"github.com/gin-gonic/gin"
 )
 
@@ -38,8 +39,7 @@ func main() {
 	   bootstrap.SetupRoute(router)
 	   // 初始化 Redis
 	   bootstrap.SetupRedis()
-   
-   
+	   
 	   // 运行服务
 	   err := router.Run(":" + pkgconfig.Get("app.port"))
 	   if err != nil {
