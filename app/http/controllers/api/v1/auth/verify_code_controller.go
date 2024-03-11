@@ -47,3 +47,19 @@ func (vc *VerifyCodeController) SendUsingPhone(c *gin.Context) {
         response.Success(c)
     }
 }
+
+// SendUsingEmail send Email captcha
+func(vc *VerifyCodeController) SendUsingEmail(c *gin.Context) {
+	// 1. 验证表单
+	request := requests.VerifyCodeEmailRequest{}
+	if ok := requests.ValidForm(&request, c, requests.VerifyCodeEmail); !ok {
+		return
+	}
+	// 2. 发送邮件
+	err := verifycode.NewVerifyCode().SendEmail(request.Email)
+	if err != nil {
+		response.Abort500(c, "发送 Email 验证码失败~")
+	} else {
+		response.Success(c)
+	}
+}
