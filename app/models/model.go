@@ -1,7 +1,10 @@
 // package models 模型通用属性和方法
 package models
 
-import "time"
+import (
+	"time"
+
+)
 
 // BaseModel: model base class
 type BaseModel struct {
