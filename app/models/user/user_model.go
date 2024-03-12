@@ -4,6 +4,7 @@ package user
 import (
 	"goapihub/app/models"
 	"goapihub/pkg/database"
+	"goapihub/pkg/hash"
 )
 
 type User struct {
@@ -25,4 +26,9 @@ func (userModel *User) Create() error {
 	}
 	// success
 	return nil
+}
+
+// ComparePassword 密码是否正确
+func (userModel *User) ComparePassword(_password string) bool {
+    return hash.BcryptCheck(_password, userModel.Password)
 }
