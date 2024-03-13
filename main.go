@@ -3,10 +3,14 @@ package main
 import (
 	"flag"
 	"fmt"
+
+	"goapihub/app/http/middlewares"
 	"goapihub/bootstrap"
 	"goapihub/config"
+	"goapihub/pkg/auth"
 	pkgconfig "goapihub/pkg/config"
-	
+	"goapihub/pkg/response"
+
 	"github.com/gin-gonic/gin"
 )
 
