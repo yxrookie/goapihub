@@ -6,6 +6,7 @@ import (
 	v1 "goapihub/app/http/controllers/api/v1"
 	"goapihub/app/models/user"
 	"goapihub/app/requests"
+	"goapihub/pkg/jwt"
 	"goapihub/pkg/response"
 
 	"github.com/gin-gonic/gin"
@@ -73,7 +74,9 @@ func(sc *SignupController) SignupUsingPhone(c *gin.Context) {
 	}
 
 	if _user.ID > 0 {
+		token := jwt.NewJWT().IssueToken(_user.GetStringID(), _user.Name)
 		response.CreatedJSON(c, gin.H{
+			"token": token,
 			"data": _user,
 		})
 	} else {
@@ -104,7 +107,9 @@ func(sc *SignupController) SignupUsingEmail(c *gin.Context) {
 	}
 
 	if _user.ID > 0 {
+		token := jwt.NewJWT().IssueToken(_user.GetStringID(), _user.Name)
 		response.CreatedJSON(c, gin.H{
+			"token": token,
 			"data": _user,
 		})
 	} else {
