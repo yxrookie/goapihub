@@ -1,6 +1,12 @@
 package user
 
-import "goapihub/pkg/database"
+import (
+	"goapihub/pkg/app"
+	"goapihub/pkg/database"
+	"goapihub/pkg/paginator"
+
+	"github.com/gin-gonic/gin"
+)
 
 // IsEmailExist: judge whether emial is resgitered
 func IsEmailExist(email string) bool {
@@ -47,5 +53,17 @@ func GetByEmail(email string) (userModel User) {
 // All 获取所有用户数据
 func All() (users []User) {
     database.DB.Find(&users)
+    return
+}
+
+// Paginate 分页内容
+func Paginate(c *gin.Context, perPage int) (users []User, paging paginator.Paging) {
+    paging = paginator.Paginate(
+        c,
+        database.DB.Model(User{}),
+        &users,
+        app.V1URL(database.TableName(&User{})),
+        perPage,
+    )
     return
 }
