@@ -3,7 +3,6 @@ package bootstrap
 import (
 	"errors"
 	"fmt"
-	"goapihub/app/models/user"
 	"goapihub/pkg/config"
 	"goapihub/pkg/database"
 	"goapihub/pkg/logger"
@@ -51,5 +50,5 @@ func SetupDB() {
 	database.SQLDB.SetConnMaxLifetime(time.Duration(config.GetInt("database.mysql.max_life_seconds")) * time.Second)
 
 	// check the mysql table whether exist, if not, create a table using the user.User struct
-	database.DB.AutoMigrate(&user.User{})
+	//database.DB.AutoMigrate(&user.User{})
 }
