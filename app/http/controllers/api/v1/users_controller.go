@@ -1,10 +1,11 @@
 package v1
 
 import (
-    "goapihub/pkg/auth"
-    "goapihub/pkg/response"
+	"goapihub/app/models/user"
+	"goapihub/pkg/auth"
+	"goapihub/pkg/response"
 
-    "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
 )
 
 type UsersController struct {
@@ -16,4 +17,10 @@ type UsersController struct {
 func (ctrl *UsersController) CurrentUser(c *gin.Context) {
     userModel := auth.CurrentUser(c)
     response.Data(c, userModel)
+}
+
+// Index 所有用户
+func (ctrl *UsersController) Index(c *gin.Context) {
+    data := user.All()
+    response.Data(c, data)
 }
