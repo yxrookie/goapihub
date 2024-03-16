@@ -33,12 +33,12 @@ func NewMigrator() *Migrator {
 		Migrator: database.DB.Migrator(),
 	}
 	// migrations: creation migrations if it not exist
-	migrator.createMigrationsTanle()
+	migrator.createMigrationsTable()
 	return migrator
 }
 
 // create migrations table
-func(migrator *Migrator) createMigrationsTanle() {
+func(migrator *Migrator) createMigrationsTable() {
 	migration := Migration{}
 
 	// create if not exist 
@@ -204,5 +204,24 @@ func (migrator *Migrator) Refresh() {
     migrator.Reset()
 
     // 再次执行所有迁移
+    migrator.Up()
+}
+
+// Fresh Drop 所有的表并重新运行所有迁移
+func (migrator *Migrator) Fresh() {
+
+    // 获取数据库名称，用以提示
+    dbname := database.CurrentDatabase()
+
+    // 删除所有表
+    err := database.DeleteAllTables()
+    console.ExitIf(err)
+    console.Success("clearup database " + dbname)
+
+    // 重新创建 migrates 表
+    migrator.createMigrationsTable()
+    console.Success("[migrations] table created.")
+
+    // 重新调用 up 命令
     migrator.Up()
 }
