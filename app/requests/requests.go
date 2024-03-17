@@ -40,3 +40,26 @@ func ValidForm(obj any, c *gin.Context,handler validFunc) bool {
 	}
 	return true
 }
+
+func ValidGetForm(obj any, c *gin.Context,handler validFunc) bool {
+	 // 获取查询参数
+	 sort := c.Query("sort")
+	 order := c.Query("order")
+	 perPage := c.Query("per_page")
+ 
+	 // 将查询参数填充到 PaginationRequest 结构体中
+	 request := obj.(*PaginationRequest)
+	 request.Sort = sort
+	 request.Order = order
+	 request.PerPage = perPage
+ 
+	 // 执行验证
+	 errs := handler(obj, c)
+ 
+	 if len(errs) > 0 {
+		 // 如果验证失败，返回错误响应
+		 response.ValidationError(c, errs)
+		 return false
+	 }
+	 return true
+}
